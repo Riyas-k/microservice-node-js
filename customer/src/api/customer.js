@@ -4,9 +4,11 @@ const UserAuth = require("./middlewares/auth");
 module.exports = (app) => {
   const service = new CustomerService();
 
-  app.post("/customer/signup", async (req, res, next) => {
+  app.post("/signup", async (req, res, next) => {
     try {
       const { email, password, phone } = req.body;
+      const response = await service.checkUser(email);
+      if (response) return res.json({ error: "email Already Existed" });
       const { data } = await service.SignUp({ email, password, phone });
       return res.json(data);
     } catch (err) {
@@ -14,7 +16,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post("/customer/login", async (req, res, next) => {
+  app.post("/login", async (req, res, next) => {
     try {
       const { email, password } = req.body;
 
@@ -26,7 +28,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post("/customer/address", UserAuth, async (req, res, next) => {
+  app.post("/address", UserAuth, async (req, res, next) => {
     try {
       const { _id } = req.user;
 
@@ -45,7 +47,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get("/customer/profile", UserAuth, async (req, res, next) => {
+  app.get("/profile", UserAuth, async (req, res, next) => {
     try {
       const { _id } = req.user;
       const { data } = await service.GetProfile({ _id });
@@ -55,7 +57,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get("/customer/shoping-details", UserAuth, async (req, res, next) => {
+  app.get("/shoping-details", UserAuth, async (req, res, next) => {
     try {
       const { _id } = req.user;
       const { data } = await service.GetShopingDetails(_id);
@@ -66,7 +68,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get("/customer/wishlist", UserAuth, async (req, res, next) => {
+  app.get("/wishlist", UserAuth, async (req, res, next) => {
     try {
       const { _id } = req.user;
       const { data } = await service.GetWishList(_id);
