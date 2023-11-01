@@ -2,24 +2,20 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const OrderSchema = new Schema(
+const cartSchema = new Schema(
   {
-    orderId: String,
-    customerId: String,
-    amount: Number,
-    status: String,
-    txnId: String,
+    customerId: { type: String },
     items: [
       {
         product: {
           _id: { type: String, require: true },
           name: { type: String },
-          desc: { type: String },
+          desc:{type:String},
           banner: { type: String },
-          type: { type: String },
-          unit: { type: Number },
+          type:{type:String},
+          unit:{type:Number},
           price: { type: Number },
-          suplier: { type: String },
+          suplier:{type:String}
         },
         unit: { type: Number, require: true },
       },
@@ -35,4 +31,4 @@ const OrderSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("order", OrderSchema);
+module.exports = mongoose.model("cart", cartSchema);
